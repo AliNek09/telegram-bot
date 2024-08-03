@@ -1,8 +1,3 @@
-# Template PHP Build
-
-# This template allows you to validate your PHP application.
-# The workflow allows running tests and code linting on the default branch.
-
 image: atlassian/default-image:2
 
 pipelines:
@@ -19,24 +14,27 @@ pipelines:
           - echo $DOCKER_HUB_PASSWORD | docker login --username $DOCKER_HUB_USERNAME --password-stdin
 
           # Build the Docker Images
-          - docker build -t $DOCKER_HUB_USERNAME /telegram-bot_php:$BITBUCKET_COMMIT -f Dockerfile .
-          - docker build -t $DOCKER_HUB_USERNAME/telegram-bot_nginx:$BITBUCKET_COMMIT -f Dockerfile.nginx .
+          - docker build -t $DOCKER_HUB_USERNAME/telegram-bot:php-latest:$BITBUCKET_COMMIT -f Dockerfile .
+          - docker build -t $DOCKER_HUB_USERNAME/telegram-bot:nginx-latest:$BITBUCKET_COMMIT -f Dockerfile.nginx .
 
-         # Push the Docker Images to Docker Hub
-          - docker push $DOCKER_HUB_USERNAME/telegram-bot_php:$BITBUCKET_COMMIT
-          - docker push $DOCKER_HUB_USERNAME/telegram-bot_nginx:$BITBUCKET_COMMIT
+          # Push the Docker Images to Docker Hub
+          - docker push $DOCKER_HUB_USERNAME/telegram-bot:php-latest:$BITBUCKET_COMMIT
+          - docker push $DOCKER_HUB_USERNAME/telegram-bot:nginx-latest:$BITBUCKET_COMMIT
 
-         # Tag and push the 'latest' versions
-          - docker tag $DOCKER_HUB_USERNAME/telegram-bot_php:$BITBUCKET_COMMIT $DOCKER_HUB_USERNAME/telegram-bot_php:latest
-          - docker tag $DOCKER_HUB_USERNAME/telegram-bot_nginx:$BITBUCKET_COMMIT $DOCKER_HUB_USERNAME/telegram-bot_nginx:latest
-          - docker push $DOCKER_HUB_USERNAME/telegram-bot_php:latest
-          - docker push $DOCKER_HUB_USERNAME/telegram-bot_nginx:latest
+          # Tag and push the 'latest' versions
+          - docker tag $DOCKER_HUB_USERNAME/telegram-bot:php-latest:$BITBUCKET_COMMIT $DOCKER_HUB_USERNAME/telegram-bot:php-latest
+          - docker tag $DOCKER_HUB_USERNAME/telegram-bot:nginx-latest:$BITBUCKET_COMMIT $DOCKER_HUB_USERNAME/telegram-bot:nginx-latest
+          - docker push $DOCKER_HUB_USERNAME/telegram-bot:php-latest
+          - docker push $DOCKER_HUB_USERNAME/telegram-bot:nginx-latest
 
-         # DEPLOY TO MY LINUX SERVER, BY USING deploy.sh script
+          # DEPLOY TO MY LINUX SERVER, BY USING deploy.sh script
           - pipe: atlassian/ssh-run:0.2.6
             variables:
               SSH_USER: $SSH_USER
               SERVER: $SERVER_IP
               COMMAND: |
                 cd /var/www/telegram-bot
-                /.deploy1.sh
+                ./deploy1.sh
+
+
+
