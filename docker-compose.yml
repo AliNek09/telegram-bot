@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+    php:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: alineck09/telegram-bot:php-latest
+        volumes:
+            - .:/app
+        expose:
+            - "9000"
+
+    nginx:
+        build:
+            context: ./nginx
+            dockerfile: Dockerfile
+        ports:
+            - "80:80"
+        volumes:
+            - .:/app
+        depends_on:
+            - php
