@@ -17,9 +17,9 @@ pipelines:
           - docker build -t $DOCKER_HUB_USERNAME/telegram-bot:php-latest-$BITBUCKET_COMMIT -f Dockerfile .
           - docker build -t $DOCKER_HUB_USERNAME/telegram-bot:nginx-latest-$BITBUCKET_COMMIT -f nginx/Dockerfile .
 
-          # Push the Docker Images to Docker Hub
-          - docker push $DOCKER_HUB_USERNAME/telegram-bot:php-latest-$BITBUCKET_COMMIT
-          - docker push $DOCKER_HUB_USERNAME/telegram-bot:nginx-latest-$BITBUCKET_COMMIT
+#          # Push the Docker Images to Docker Hub
+#          - docker push $DOCKER_HUB_USERNAME/telegram-bot:php-latest-$BITBUCKET_COMMIT
+#          - docker push $DOCKER_HUB_USERNAME/telegram-bot:nginx-latest-$BITBUCKET_COMMIT
 
           # Tag and push the 'latest' versions
           - docker tag $DOCKER_HUB_USERNAME/telegram-bot:php-latest-$BITBUCKET_COMMIT $DOCKER_HUB_USERNAME/telegram-bot:php-latest
