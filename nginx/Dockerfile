@@ -6,4 +6,4 @@ COPY nginx/nginx.conf /etc/nginx/nginx.conf
 
 COPY --from=php /app /var/www/html
 
-EXPOSE 80
+EXPOSE 80 443
