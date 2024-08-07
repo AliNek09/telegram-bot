@@ -1,0 +1,35 @@
+DOCKER_HUB_USERNAME=dockerhub-username
+PROJECT_NAME=project-name
+IP_ADDRESS=your.server.ip.address  # Replace this with your real IP address
+
+# Pull the latest images
+docker pull $DOCKER_HUB_USERNAME/$PROJECT_NAME:php-latest
+docker pull $DOCKER_HUB_USERNAME/$PROJECT_NAME:nginx-latest
+
+# Stop and remove existing containers
+docker stop ${PROJECT_NAME}_php
+docker rm ${PROJECT_NAME}_php
+docker stop ${PROJECT_NAME}_nginx
+docker rm ${PROJECT_NAME}_nginx
+
+# Remove unused images
+docker image prune -f
+
+# Generate self-signed SSL certificate with the correct IP address
+mkdir -p /etc/nginx/ssl
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+    -keyout /etc/nginx/ssl/nginx-selfsigned.key \
+    -out /etc/nginx/ssl/nginx-selfsigned.crt \
+    -subj "/CN=$IP_ADDRESS"
+
+# Run new containers
+docker run -d --name ${PROJECT_NAME}_php \
+    -v /telegram-bot:/app \
+    $DOCKER_HUB_USERNAME/$PROJECT_NAME:php-latest
+
+docker run -d --name ${PROJECT_NAME}_nginx \
+    -p 80:80 -p 443:443 \
+    --link ${PROJECT_NAME}_php:php \
+    -v /telegram-bot:/app \
+    -v /etc/nginx/ssl:/etc/nginx/ssl \
+    $DOCKER_HUB_USERNAME/$PROJECT_NAME:nginx-latest
