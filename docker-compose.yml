@@ -6,6 +6,8 @@ services:
             context: .
             dockerfile: Dockerfile
         image: alineck09/telegram-bot:php-latest
+        environment:
+            - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
         volumes:
             - .:/app
         expose:
