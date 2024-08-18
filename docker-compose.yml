@@ -22,6 +22,6 @@ services:
             - "443:443"
         volumes:
             - .:/app
-            -  /etc/letsencrypt:/etc/letsencrypt:ro
+            - /etc/letsencrypt:/etc/letsencrypt:ro
         depends_on:
             - php
