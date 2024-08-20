@@ -12,6 +12,8 @@ services:
             - .:/app
         expose:
             - "9000"
+        networks:
+            - app-network
 
     nginx:
         build:
@@ -25,3 +27,9 @@ services:
             - /etc/letsencrypt:/etc/letsencrypt
         depends_on:
             - php
+        networks:
+            - app-network
+
+networks:
+    app-network:
+        driver: bridge
