@@ -22,6 +22,8 @@ docker run -d --name ${PROJECT_NAME}_php \
 
 docker run -d --name ${PROJECT_NAME}_nginx \
     -p 80:80  \
+    -p 443:443
     --link ${PROJECT_NAME}_php:php \
     -v /telegram-bot:/app \
+     -v /etc/letsencrypt/live/ali-nek.lol:/etc/letsencrypt/live/ali-nek.lol:ro \
     $DOCKER_HUB_USERNAME/$PROJECT_NAME:nginx-latest
