@@ -25,7 +25,7 @@ services:
         volumes:
             - .:/app
             - ./nginx:/etc/nginx/conf.d
-            - /etc/letsencrypt:/etc/letsencrypt
+            - certs:/etc/letsencrypt
         depends_on:
             - php
         networks:
@@ -34,3 +34,6 @@ services:
 networks:
     app-network:
         driver: bridge
+
+volumes:
+    certs:
