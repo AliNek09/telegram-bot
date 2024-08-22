@@ -16,10 +16,17 @@ jobs:
       - name: Log in to Docker Hub
         run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login --username "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
 
+      - name: Debug Variables
+        run: |
+          echo "DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}"
+          echo "GITHUB_SHA: ${{ github.sha }}"
+
       - name: Build Docker Images
         run: |
-            docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:php-latest-${{ github.sha }}" -f Dockerfile .
-            docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:nginx-latest-${{ github.sha }}" -f nginx/Dockerfile ./nginx
+          echo "Building PHP image..."
+          docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:php-latest-${{ github.sha }}" -f Dockerfile .
+          echo "Building Nginx image..."
+          docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:nginx-latest-${{ github.sha }}" -f nginx/Dockerfile ./nginx
 
       - name: Push Docker Images
         run: |
