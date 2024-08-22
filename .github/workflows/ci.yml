@@ -16,30 +16,27 @@ jobs:
       - name: Log in to Docker Hub
         run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login --username "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
 
+      - name: Debug Variables
+        run: |
+                echo "DOCKER_HUB_USERNAME: '${{ secrets.DOCKER_HUB_USERNAME }}'"
+                echo "GITHUB_SHA: '${{ github.sha }}'"
+
       - name: Build Docker Images
         run: |
-            TAG_PHP="${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:php-latest-${{ github.sha }}"
-            TAG_NGINX="${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:nginx-latest-${{ github.sha }}"
-            echo "Building PHP image with tag: $TAG_PHP"
-            docker build -t "$TAG_PHP" -f Dockerfile .
-            echo "Building Nginx image with tag: $TAG_NGINX"
-            docker build -t "$TAG_NGINX" -f nginx/Dockerfile ./nginx
+          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:php-latest-${{ github.sha }} -f Dockerfile .
+          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:nginx-latest-${{ github.sha }} -f nginx/Dockerfile .
 
-      - name: Push Docker Images
+      - name: Docker Push Images
         run: |
-            TAG_PHP="${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:php-latest-${{ github.sha }}"
-            TAG_NGINX="${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:nginx-latest-${{ github.sha }}"
-            docker push "$TAG_PHP"
-            docker push "$TAG_NGINX"
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:php-latest-${{ github.sha }}
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:nginx-latest-${{ github.sha }}
 
-      - name: Tag and Push 'latest' Versions
+      - name: Tag and Push 'latest' versions
         run: |
-            TAG_PHP="${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:php-latest-${{ github.sha }}"
-            TAG_NGINX="${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:nginx-latest-${{ github.sha }}"
-            docker tag "$TAG_PHP" "${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:php-latest"
-            docker tag "$TAG_NGINX" "${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:nginx-latest"
-            docker push "${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:php-latest"
-            docker push "${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:nginx-latest"
+          docker tag ${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:php-latest-${{ github.sha }} ${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:php-latest
+          docker tag ${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:nginx-latest-${{ github.sha }} ${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:nginx-latest
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:php-latest
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:nginx-latest
 
       - name: Deploy to Linux server
         uses: appleboy/ssh-action@v0.1.2
