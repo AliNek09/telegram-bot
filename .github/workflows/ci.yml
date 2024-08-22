@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Log in to Docker Hub
+        run: echo ${{ secrets.DOCKER_HUB_PASSWORD }} | docker login --username ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
+
+      - name: Build Docker Images
+        run: |
+            docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:php-latest-${{ github.sha }} -f Dockerfile .
+            docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:nginx-latest-${{ github.sha }} -f nginx/Dockerfile .
+      - name: Docker Push Images
+        run: |
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:php-latest-${{ github.sha }}
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:nginx-latest-${{ github.sha }}
+
+      - name: Tag and Push 'latest' versions
+        run: |
+         docker tag ${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:php-latest-${{ github.sha }} ${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:php-latest
+         docker tag ${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:nginx-latest-${{ github.sha }} ${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:nginx-latest
+         docker push ${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:php-latest
+         docker push ${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:nginx-latest
+
+      - name: Deploy to Linux server
+        uses: appleboy/ssh-action@v0.1.2
+        with:
+          host: ${{ secrets.SERVER_IP}}
+          username: ${{ secrets.SSH_USER}}
+          key: ${{secrets.SSH_PRIVATE_KEY}}
+          scripts: |
+            cd /telegram-bot/deploy.sh
+            ./deploy.sh
