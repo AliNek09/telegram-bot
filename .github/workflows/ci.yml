@@ -31,8 +31,8 @@ jobs:
 
       - name: Tag and Push 'latest' versions
         run: |
-          docker tag "alineck09/telegram-bot:php-latest-${{ github.sha }}" "alineck09/telegram-bot:php-latest"
-          docker tag "alineck09/telegram-bot:nginx-latest-${{ github.sha }}" "alineck09/telegram-bot:nginx-latest"
+          docker tag "${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:php-latest-${{ github.sha }}" "alineck09/telegram-bot:php-latest"
+          docker tag "${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:nginx-latest-${{ github.sha }}" "alineck09/telegram-bot:nginx-latest"
           docker push "alineck09/telegram-bot:php-latest"
           docker push "alineck09/telegram-bot:nginx-latest"
 
