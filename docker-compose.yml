@@ -30,6 +30,8 @@ services:
             - php
         networks:
             - app-network
+        environment:
+            - CERTBOT_EMAIL=${CERTBOT_EMAIL}
 
 networks:
     app-network:
