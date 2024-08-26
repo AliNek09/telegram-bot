@@ -21,6 +21,8 @@ jobs:
 
       - name: Build Docker Images
         run: |
+          echo "${{ secrets.DOCKER_HUB_USERNAME }}"
+          echo "${{ github.sha }}"
           docker buildx build --platform linux/amd64 -t "${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:php-latest-${{ github.sha }}" -f Dockerfile .
           docker buildx build --platform linux/amd64 -t "${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:nginx-latest-${{ github.sha }}" -f nginx/Dockerfile ./nginx/
 
