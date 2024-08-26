@@ -21,20 +21,20 @@ jobs:
 
       - name: Build Docker Images
         run: |
-          docker buildx build --platform linux/amd64 -t "${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:php-latest-${{ github.sha }}" -f Dockerfile .
-          docker buildx build --platform linux/amd64 -t "${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:nginx-latest-${{ github.sha }}" -f nginx/Dockerfile ./nginx/
+          docker buildx build --platform linux/amd64 -t "alineck09/telegram-bot:php-latest-${{ github.sha }}" -f Dockerfile .
+          docker buildx build --platform linux/amd64 -t "alineck09/telegram-bot:nginx-latest-${{ github.sha }}" -f nginx/Dockerfile ./nginx/
 
       - name: Docker Push Images
         run: |
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:php-latest-${{ github.sha }}
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:nginx-latest-${{ github.sha }}
+          docker push "alineck09/telegram-bot:php-latest-${{ github.sha }}"
+          docker push "alineck09/telegram-bot:nginx-latest-${{ github.sha }}"
 
       - name: Tag and Push 'latest' versions
         run: |
-          docker tag ${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:php-latest-${{ github.sha }} ${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:php-latest
-          docker tag ${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:nginx-latest-${{ github.sha }} ${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:nginx-latest
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:php-latest
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:nginx-latest
+          docker tag "alineck09/telegram-bot:php-latest-${{ github.sha }}" "alineck09/telegram-bot:php-latest"
+          docker tag "alineck09/telegram-bot:nginx-latest-${{ github.sha }}" "alineck09/telegram-bot:nginx-latest"
+          docker push "alineck09/telegram-bot:php-latest"
+          docker push "alineck09/telegram-bot:nginx-latest"
 
       - name: Deploy to Linux server
         uses: appleboy/ssh-action@v0.1.2
