@@ -19,18 +19,10 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: List files in the repository
+      - name: Build Docker Images
         run: |
-          ls -la
-          ls -la nginx
-
-      - name: Build PHP Docker Image
-        run: |
-          docker buildx build --platform linux/amd64 -t ${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:php-latest-${{ github.sha }} -f Dockerfile .
-
-      - name: Build Nginx Docker Image
-        run: |
-          docker buildx build --platform linux/amd64 -t ${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:nginx-latest-${{ github.sha }} -f nginx/Dockerfile ./nginx/
+          docker buildx build --platform linux/amd64 -t ${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:php-latest-${{ github.sha }} -f Dockerfile . --no-cache
+          docker buildx build --platform linux/amd64 -t ${{ secrets.DOCKER_HUB_USERNAME }}/telegram-bot:nginx-latest-${{ github.sha }} -f nginx/Dockerfile ./nginx/ --no-cache
 
       - name: Docker Push Images
         run: |
