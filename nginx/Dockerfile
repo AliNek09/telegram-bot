@@ -5,8 +5,8 @@ FROM nginx:alpine
 # Install Certbot and its Nginx plugin
 RUN apk add --no-cache certbot certbot-nginx
 
-COPY nginx/nginx.conf /etc/nginx/nginx.conf
-COPY nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/nginx.conf
+COPY default.conf /etc/nginx/conf.d/default.conf
 COPY entrypoint.sh  /entrypoint.sh
 
 COPY --from=php /app /var/www/html
