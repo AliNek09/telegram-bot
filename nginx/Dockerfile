@@ -11,8 +11,6 @@ COPY nginx/entrypoint.sh  /entrypoint.sh
 
 COPY --from=php /app /var/www/html
 
-COPY nginx/entrypoint.sh /entrypoint.sh
-
 # Make the entrypoint script executable
 RUN chmod +x /entrypoint.sh
 
