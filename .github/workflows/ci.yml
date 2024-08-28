@@ -36,5 +36,5 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY}}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
-            cd /warship-game
+            cd warship-game
             ./deploy.sh
