@@ -21,21 +21,15 @@ services:
             dockerfile: Dockerfile
         ports:
             - "8080:80"
-            - "8443:443"
         volumes:
             - .:/app
             - ./nginx:/etc/nginx/conf.d
-            - certs:/etc/letsencrypt
         depends_on:
             - php
         networks:
             - app-network
-        environment:
-            - CERTBOT_EMAIL=${CERTBOT_EMAIL}
 
 networks:
     app-network:
         driver: bridge
 
-volumes:
-    certs:
