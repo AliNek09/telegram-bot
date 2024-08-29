@@ -39,5 +39,3 @@ jobs:
             cd warship-game
             ./deploy.sh
 
-
-
