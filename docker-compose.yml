@@ -24,6 +24,7 @@ services:
         volumes:
             - .:/app
             - ./nginx:/etc/nginx/conf.d
+            - ./public:/var/www/html/public
         depends_on:
             - php
         networks:
