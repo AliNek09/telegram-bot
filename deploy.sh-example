@@ -1,6 +1,7 @@
-DOCKER_HUB_USERNAME=dockerhub-username
-PROJECT_NAME=project-name
-IP_ADDRESS=your.server.ip.address  # Replace this with your real IP address
+if [ -z "$DOCKER_HUB_USERNAME" ] || [ -z "$DOCKER_HUB_PASSWORD" ] || [ -z "$PROJECT_NAME" ]; then
+  echo "Environment variables DOCKER_HUB_USERNAME, DOCKER_HUB_PASSWORD, and PROJECT_NAME must be set."
+  exit 1
+fi
 
 # Pull the latest images
 docker pull $DOCKER_HUB_USERNAME/$PROJECT_NAME:php-latest
