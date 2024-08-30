@@ -41,7 +41,6 @@ jobs:
           script: |
             export DOCKER_HUB_USERNAME="${{ secrets.DOCKER_HUB_USERNAME }}"
             export DOCKER_HUB_PASSWORD="${{ secrets.DOCKER_HUB_PASSWORD}}"
-            export PROJECT_NAME="telegram-bot"
             cd warship-game
             ./deploy.sh
 
