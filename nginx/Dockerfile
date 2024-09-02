@@ -12,10 +12,11 @@ RUN mkdir -p /var/www/html && chown -R nginx:nginx /var/www/html
 #OPTIMIZING for correct permissions for LARAVEL DIRECTORIES
 RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
+#GIVE PERMISSIONS FOR RUN
+RUN mkdir -p /run/nginx && chown -R nginx:nginx /run/nginx
+
 #REMOVE ANY DEFAULT CONF
 RUN rm /etc/nginx/conf.d/default.conf
-
-
 
 USER nginx
 
