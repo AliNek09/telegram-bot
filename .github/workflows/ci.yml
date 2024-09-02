@@ -34,13 +34,12 @@ jobs:
       - name: Deploy to Linux server
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.SERVER_IP}}
-          username: ${{ secrets.SSH_USER}}
-          key: ${{ secrets.SSH_PRIVATE_KEY}}
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
-            export DOCKER_HUB_USERNAME="${{ secrets.DOCKER_HUB_USERNAME }}"
-            export DOCKER_HUB_PASSWORD="${{ secrets.DOCKER_HUB_PASSWORD}}"
             cd warship-game
             ./deploy.sh
+
 
