@@ -31,18 +31,15 @@ jobs:
 #          docker push "alineck09/telegram-bot:php-latest"
 #          docker push "alineck09/telegram-bot:nginx-latest"
 
-      - name: Deploy to Linux server
+      - name: Set up SSH and deploy
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
-        env:
-          DOCKER_HUB_USERNAME: "${{ secrets.DOCKER_HUB_USERNAME }}"
-          DOCKER_HUB_PASSWORD: "${{ secrets.DOCKER_HUB_PASSWORD }}"
-        run: |
-          cd warship-game
-          echo "$DOCKER_HUB_PASSWORD" | docker login --username "$DOCKER_HUB_USERNAME" --password-stdin
-          ./deploy.sh
+          script: |
+            cd warship-game
+            echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login --username "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+            ./deploy.sh
 
