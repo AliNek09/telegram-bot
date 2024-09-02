@@ -7,16 +7,14 @@ COPY default.conf /etc/nginx/conf.d/default.conf
 
 COPY --from=php /app /var/www/html
 
-RUN mkdir -p /var/www/html && chown -R nginx:nginx /var/www/html
-
 #OPTIMIZING for correct permissions for LARAVEL DIRECTORIES
 RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
-#GIVE PERMISSIONS FOR RUN
-RUN mkdir -p /run/nginx && chown -R nginx:nginx /run/nginx
+# Create necessary directories and set permissions
+RUN mkdir -p /run/nginx /var/run/nginx && chown -R nginx:nginx /run/nginx /var/run/nginx /var/www/html
 
-#REMOVE ANY DEFAULT CONF
-RUN rm /etc/nginx/conf.d/default.conf
+#Give permissions for NGINX
+RUN chown -R nginx:nginx /var/cache/nginx
 
 USER nginx
 
