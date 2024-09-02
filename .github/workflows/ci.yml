@@ -19,30 +19,25 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
-#      - name: Build Docker Images
-#        run: |
-#          docker build --platform linux/amd64 -t "alineck09/telegram-bot:php-latest-${{ github.sha }}" -f Dockerfile .
-#          docker build --platform linux/amd64 -t "alineck09/telegram-bot:nginx-latest-${{ github.sha }}" -f nginx/Dockerfile ./nginx/
-#
-#      - name: Tag and Push 'latest' versions
-#        run: |
-#          docker tag "alineck09/telegram-bot:php-latest-${{ github.sha }}" "alineck09/telegram-bot:php-latest"
-#          docker tag "alineck09/telegram-bot:nginx-latest-${{ github.sha }}" "alineck09/telegram-bot:nginx-latest"
-#          docker push "alineck09/telegram-bot:php-latest"
-#          docker push "alineck09/telegram-bot:nginx-latest"
+      - name: Build Docker Images
+        run: |
+          docker build --platform linux/amd64 -t "alineck09/telegram-bot:php-latest-${{ github.sha }}" -f Dockerfile .
+          docker build --platform linux/amd64 -t "alineck09/telegram-bot:nginx-latest-${{ github.sha }}" -f nginx/Dockerfile ./nginx/
 
-      - name: Deploy to Linux server
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          script: |
-            export DOCKER_HUB_USERNAME="${{ secrets.DOCKER_HUB_USERNAME }}"
-            export DOCKER_HUB_PASSWORD="${{ secrets.DOCKER_HUB_PASSWORD }}"
-            export PROJECT_NAME="telegram-bot"
+      - name: Tag and Push 'latest' versions
+        run: |
+          docker tag "alineck09/telegram-bot:php-latest-${{ github.sha }}" "alineck09/telegram-bot:php-latest"
+          docker tag "alineck09/telegram-bot:nginx-latest-${{ github.sha }}" "alineck09/telegram-bot:nginx-latest"
+          docker push "alineck09/telegram-bot:php-latest"
+          docker push "alineck09/telegram-bot:nginx-latest"
+
+      - name: SSH and Deploy to Linux server
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
+            export DOCKER_HUB_USERNAME=${{ secrets.DOCKER_HUB_USERNAME }}
+            export DOCKER_HUB_PASSWORD=${{ secrets.DOCKER_HUB_PASSWORD }}
             cd warship-game
+            echo "$DOCKER_HUB_PASSWORD" | docker login --username "$DOCKER_HUB_USERNAME" --password-stdin
             ./deploy.sh
-
+          EOF
 
