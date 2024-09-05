@@ -1,6 +1,6 @@
 FROM alineck09/telegram-bot:php-latest AS php
 
-FROM nginxinc/nginx-unprivileged
+FROM nginxinc/nginx-unprivileged:alpine
 
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY default.conf /etc/nginx/conf.d/default.conf
