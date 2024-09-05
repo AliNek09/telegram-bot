@@ -1,6 +1,6 @@
 FROM php:8.2-fpm-alpine as php
 
-WORKDIR /app
+WORKDIR /var/www/html
 
 RUN apk add --no-cache git curl libpng-dev libjpeg-turbo-dev libzip-dev \
     && apk add --no-cache freetype-dev icu-dev libxml2-dev libxslt-dev \
@@ -11,11 +11,13 @@ RUN apk add --no-cache git curl libpng-dev libjpeg-turbo-dev libzip-dev \
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-COPY . .
+COPY . /var/www/html
 
-RUN composer install --no-dev --optimize-autoloader --no-interaction --no-plugins
+RUN composer install --no-dev --optimize-autoloader --no-interaction --no-plugins \
+    && composer clean-cache
 
-RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html/storage
 
 EXPOSE 9000
 
