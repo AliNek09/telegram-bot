@@ -28,6 +28,20 @@ services:
         networks:
             - app-network
 
+    postgresql:
+        image: postgres:14-alpine
+        environment:
+            DB_CONNECTION: ${DB_SECOND_CONNECTION}
+            DB_HOST: ${DB_SECOND_HOST}
+            DB_PORT: ${DB_SECOND_PORT}
+            DB_USERNAME: ${DB_SECOND_USERNAME}
+            DB_DATABASE: ${DB_SECOND_DATABASE}
+            DB_PASSWORD: ${DB_SECOND_PASSWORD}
+        volumes:
+            - db:/var/lib/postgresql/data
+        networks:
+           - app-network
+
 networks:
     app-network:
         driver: bridge
