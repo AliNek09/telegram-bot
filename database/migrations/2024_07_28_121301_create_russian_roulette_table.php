@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('russian_roulette', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('chat_id');
             $table->string('username');
             $table->integer('number');
