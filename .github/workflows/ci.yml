@@ -33,7 +33,7 @@ jobs:
       - name: Activation PostgresSQL
         run: |
           for i in {1..10}; do
-           nc -zv ${{ secrets.SERVER_IP }} 5432 && break
+           nc -zv ${{ secrets.DB_USERNAME }} 5432 && break
            echo "Waiting for PostgreSQL..."
            sleep 3
           done
