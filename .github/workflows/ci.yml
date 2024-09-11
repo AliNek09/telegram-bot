@@ -39,7 +39,7 @@ jobs:
           done
       - name: Migration
         run: |
-          docker exec php php artisan migrate --force
+          docker exec telegram-bot_php php artisan migrate --force
 
       - name: Set up SSH and deploy
         uses: appleboy/ssh-action@v1.0.3
