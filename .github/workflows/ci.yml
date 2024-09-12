@@ -18,17 +18,17 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
-      - name: Build Docker Images
-        run: |
-          docker build --platform linux/amd64 -t "alineck09/telegram-bot:php-latest-${{ github.sha }}" -f Dockerfile .
-          docker build --platform linux/amd64 -t "alineck09/telegram-bot:nginx-latest-${{ github.sha }}" -f nginx/Dockerfile ./nginx/
-
-      - name: Tag and Push 'latest' versions
-        run: |
-          docker tag "alineck09/telegram-bot:php-latest-${{ github.sha }}" "alineck09/telegram-bot:php-latest"
-          docker tag "alineck09/telegram-bot:nginx-latest-${{ github.sha }}" "alineck09/telegram-bot:nginx-latest"
-          docker push "alineck09/telegram-bot:php-latest"
-          docker push "alineck09/telegram-bot:nginx-latest"
+#      - name: Build Docker Images
+#        run: |
+#          docker build --platform linux/amd64 -t "alineck09/telegram-bot:php-latest-${{ github.sha }}" -f Dockerfile .
+#          docker build --platform linux/amd64 -t "alineck09/telegram-bot:nginx-latest-${{ github.sha }}" -f nginx/Dockerfile ./nginx/
+#
+#      - name: Tag and Push 'latest' versions
+#        run: |
+#          docker tag "alineck09/telegram-bot:php-latest-${{ github.sha }}" "alineck09/telegram-bot:php-latest"
+#          docker tag "alineck09/telegram-bot:nginx-latest-${{ github.sha }}" "alineck09/telegram-bot:nginx-latest"
+#          docker push "alineck09/telegram-bot:php-latest"
+#          docker push "alineck09/telegram-bot:nginx-latest"
 
       - name: Activation PostgresSQL
         run: |
@@ -42,7 +42,7 @@ jobs:
           DB_USERNAME=${{ secrets.DB_USERNAME }}
           DB_PASSWORD=${{ secrets.DB_PASSWORD }}
           DB_DATABASE=${{ secrets.DB_DATABASE }}
-          docker exec telegram-bot_php php artisan migrate --force
+          php artisan migrate --force
 
       - name: Set up SSH and deploy
         uses: appleboy/ssh-action@v1.0.3
