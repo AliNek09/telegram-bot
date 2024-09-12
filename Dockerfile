@@ -8,7 +8,6 @@ RUN apk add --no-cache git curl libpng-dev libjpeg-turbo-dev libzip-dev \
     && docker-php-ext-install gd pdo pdo_mysql pdo_pgsql zip exif pcntl intl bcmath xml xsl opcache \
     && docker-php-ext-enable gd intl opcache
 
-
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 COPY . /var/www/html
