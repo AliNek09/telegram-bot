@@ -40,5 +40,5 @@ jobs:
           script: |
             cd warship-game
             echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login --username "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
-            docker exec telegram-bot_php php artisan migrate --force
+
             ./deploy.sh
