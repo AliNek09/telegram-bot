@@ -6,14 +6,13 @@ services:
             context: .
             dockerfile: Dockerfile
         image: alineck09/telegram-bot:php-latest
+        network_mode: host
         env_file:
             - .env.production
         volumes:
             - .:/app
         expose:
             - "9000"
-        networks:
-            - app-network
 
     nginx:
         build:
@@ -25,11 +24,6 @@ services:
             - .:/var/www/html
         depends_on:
             - php
-        networks:
-            - app-network
+        network_mode: host
 
-
-networks:
-    app-network:
-        driver: bridge
 
