@@ -6,8 +6,8 @@ services:
             context: .
             dockerfile: Dockerfile
         image: alineck09/telegram-bot:php-latest
-        environment:
-            - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+        env_file:
+            - .env.production
         volumes:
             - .:/app
         expose:
@@ -28,16 +28,6 @@ services:
         networks:
             - app-network
 
-    postgresql:
-        image: postgres:14-alpine
-        environment:
-            POSTGRES_USER: ${DB_SECOND_USERNAME}
-            POSTGRES_DB:  ${DB_SECOND_DATABASE}
-            POSTGRES_PASSWORD: ${DB_SECOND_PASSWORD}
-        volumes:
-            - db:/var/lib/postgresql/data
-        networks:
-            - app-network
 
 networks:
     app-network:
