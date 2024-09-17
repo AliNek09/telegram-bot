@@ -30,7 +30,7 @@ return [
     */
 
     'connections' => [
-        'testing' => [
+        'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DB_URL'),
             'host' => env('DB_HOST', '127.0.0.1'),
@@ -45,7 +45,7 @@ return [
             'sslmode' => 'prefer',
         ],
 
-        'production' => [
+        'testing' => [
             'driver' => 'pgsql',
             'url' => env('DB_URL'),
             'host' => env('DB_SECOND_HOST'),
