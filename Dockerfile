@@ -13,6 +13,8 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 COPY . /var/www/html
 
+COPY .env.production /var/www/html/.env
+
 RUN composer install --no-dev --optimize-autoloader --no-interaction --no-plugins \
     && composer clear-cache
 
