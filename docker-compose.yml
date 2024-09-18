@@ -48,8 +48,8 @@ services:
             - ./postgresql.conf:/etc/postgresql/postgresql.conf
             - ./pg_hba.conf:/etc/postgresql/pg_hba.conf
 
-        command: ["postgres", "-c", "config_file=/etc/postgresql/postgresql.conf",
-        "-c", "hba_file=/etc/postgresql/pg_hba.conf"]
+        command: [ "postgres", "-c", "config_file=/etc/postgresql/postgresql.conf",
+                   "-c", "hba_file=/etc/postgresql/pg_hba.conf", ]
 
         ports:
             - "5432:5432"
