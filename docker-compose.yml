@@ -38,8 +38,8 @@ services:
         image: postgres:16-alpine
 
         environment:
-            POSTGRES_USER: ${DB_USERNAME}
-            POSTGRES_PASSWORD: ${DB_PASSWORD}
+            POSTGRES_USER: ${DB_USERNAME:-postgres}
+            POSTGRES_PASSWORD: ${DB_PASSWORD:-defaultpassword}
             PG_DATA: /var/lib/postgresql/data
 
         volumes:
@@ -47,6 +47,9 @@ services:
             - ./logs:/var/log/postgresql
             - ./postgresql.conf:/etc/postgresql/postgresql.conf
             - ./pg_hba.conf:/etc/postgresql/pg_hba.conf
+
+        command: ["postgres", "-c", "config_file=/etc/postgresql/postgresql.conf",
+        "-c", "hba_file=/etc/postgresql/pg_hba.conf"]
 
         ports:
             - "5432:5432"
