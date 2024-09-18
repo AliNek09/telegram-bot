@@ -6,8 +6,7 @@ services:
             context: .
             dockerfile: Dockerfile
         image: alineck09/telegram-bot:php-latest
-        env_file:
-            - .env.production
+
         volumes:
             - .:/app
         expose:
@@ -15,6 +14,9 @@ services:
 
         networks:
             - app-network
+
+        depends_on:
+          - postgresql
 
     nginx:
         build:
@@ -30,7 +32,30 @@ services:
         networks:
             - app-network
 
+    postgresql:
+        container_name: postgres
 
+        image: postgres:16-alpine
+
+        environment:
+            POSTGRES_USER: ${DB_USERNAME}
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
+            PG_DATA: /var/lib/postgresql/data
+
+        volumes:
+            - ./data:/var/lib/postgresql/data
+            - ./logs:/var/log/postgresql
+            - ./postgresql.conf:/etc/postgresql/postgresql.conf
+            - ./pg_hba.conf:/etc/postgresql/pg_hba.conf
+
+        ports:
+            - "5432:5432"
+
+volumes:
+    data:
+        driver: local
+    logs:
+        driver: local
 
 networks:
     app-network:
