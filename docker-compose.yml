@@ -35,7 +35,9 @@ services:
     postgresql:
         container_name: postgres
 
-        image: postgres:16-alpine
+        build:
+            context: ./pgsql
+            dockerfile: Dockerfile
 
         environment:
             POSTGRES_USER: ${DB_USERNAME:-postgres}
@@ -45,11 +47,6 @@ services:
         volumes:
             - ./data:/var/lib/postgresql/data
             - ./logs:/var/log/postgresql
-            - ./postgresql.conf:/etc/postgresql/postgresql.conf
-            - ./pg_hba.conf:/etc/postgresql/pg_hba.conf
-
-        command: [ "postgres", "-c", "config_file=/etc/postgresql/postgresql.conf",
-                   "-c", "hba_file=/etc/postgresql/pg_hba.conf", ]
 
         ports:
             - "5432:5432"
