@@ -1,25 +1,34 @@
-
+d
+DOCKER_HUB_USERNAME=alineck09
 PROJECT_NAME=telegram-bot
 
 # Pull the latest images
 docker pull $DOCKER_HUB_USERNAME/$PROJECT_NAME:php-latest
 docker pull $DOCKER_HUB_USERNAME/$PROJECT_NAME:nginx-latest
 
-# Stop and remove existing containers
-docker stop ${PROJECT_NAME}_php
-docker rm ${PROJECT_NAME}_php
-docker stop ${PROJECT_NAME}_nginx
-docker rm ${PROJECT_NAME}_nginx
-# Remove unused images
-docker image prune -f
+# Stop and remove existing containers if they exist
+if docker ps -q -f name=${PROJECT_NAME}_php; then
+  docker stop ${PROJECT_NAME}_php
+  docker rm ${PROJECT_NAME}_php
+fi
 
-# Run new containers
+if docker ps -q -f name=${PROJECT_NAME}_nginx; then
+  docker stop ${PROJECT_NAME}_nginx
+  docker rm ${PROJECT_NAME}_nginx
+fi
+
+# Run new php container with the mounted .env.production file
 docker run -d --name ${PROJECT_NAME}_php \
-    -v /telegram-bot:/app \
+    -v ~/warship-game:/app \
+    -v ~/warship-game/.env.production:/app/.env \  # Using ~ for the user's home directory
     $DOCKER_HUB_USERNAME/$PROJECT_NAME:php-latest
 
+# Run new nginx container
 docker run -d --name ${PROJECT_NAME}_nginx \
-    -p 80:80  \
+    -v ~/warship-game:/app \
     --link ${PROJECT_NAME}_php:php \
-    -v /telegram-bot:/app \
+    -p 80:80 \
     $DOCKER_HUB_USERNAME/$PROJECT_NAME:nginx-latest
+
+# END OF LINE
+
