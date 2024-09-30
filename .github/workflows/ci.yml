@@ -42,3 +42,7 @@ jobs:
             echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login --username "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
 
             ./deploy.sh
+
+            docker run --network app-network --name telegram-bot_php -d alineck09/telegram-bot:php-latest
+            docker run --network app-network --name telegram-bot_nginx -d -p 80:80 alineck09/telegram-bot:nginx-latest
+
