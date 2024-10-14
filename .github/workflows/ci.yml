@@ -37,9 +37,10 @@ jobs:
       - name: Update Laravel Service
         run: |
           aws ecs update-service \
-            --cluster DevCluster
-            --service laravel
-            --force-new-deployment
+            --cluster DevCluster \
+            --service laravel \
+            --force-new-deployment \
             --region us-east-1
+
 
 
