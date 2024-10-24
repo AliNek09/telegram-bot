@@ -38,7 +38,7 @@ jobs:
         run: |
           aws ecs update-service \
             --cluster DevCluster \
-            --service laravel-php \
+            --service laravel \
             --force-new-deployment \
             --region us-east-1
 
