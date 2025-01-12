@@ -15,6 +15,8 @@ fi
 if docker ps -q -f name=${PROJECT_NAME}_nginx; then
   docker stop ${PROJECT_NAME}_nginx
   docker rm ${PROJECT_NAME}_nginx
+
+
 fi
 
 # Run new php container with the mounted .env.production file

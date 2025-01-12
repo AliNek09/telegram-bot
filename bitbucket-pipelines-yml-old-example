@@ -13,6 +13,8 @@ pipelines:
           # Log in to Docker Hub
           - echo $DOCKER_HUB_PASSWORD | docker login --username $DOCKER_HUB_USERNAME --password-stdin
 
+
+
           # Build the Docker Images
           - docker build -t $DOCKER_HUB_USERNAME/telegram-bot:php-latest-$BITBUCKET_COMMIT -f Dockerfile .
           - docker build -t $DOCKER_HUB_USERNAME/telegram-bot:nginx-latest-$BITBUCKET_COMMIT -f nginx/Dockerfile .

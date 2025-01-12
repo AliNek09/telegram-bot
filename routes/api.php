@@ -9,8 +9,6 @@ Route::prefix('/bot/webhook')->controller(BotController::class)->group(function(
     Route::prefix('/games')->group(function () {
         Route::post('/roulette', [RussianRouletteController::class, 'roulette']);
     });
-
-
    Route::post('message', 'message');
 });
 
