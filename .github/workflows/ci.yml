@@ -27,20 +27,20 @@ jobs:
             docker tag "alineck09/telegram-bot:php-latest-${{ github.sha }}" "alineck09/telegram-bot:php-latest"
             docker push "alineck09/telegram-bot:php-latest"
 
-#      - name: AWS Log In
-#        uses: aws-actions/configure-aws-credentials@v2
-#        with:
-#            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-#            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#            aws-region: us-east-1
-#
-#      - name: Update Laravel Service
-#        run: |
-#          aws ecs update-service \
-#            --cluster DevCluster \
-#            --service laravel \
-#            --force-new-deployment \
-#            --region us-east-1
+      - name: AWS Log In
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws-region: us-east-1
+
+      - name: Update Laravel Service
+        run: |
+          aws ecs update-service \
+            --cluster DevCluster \
+            --service laravel \
+            --force-new-deployment \
+            --region us-east-1
 
 
 
