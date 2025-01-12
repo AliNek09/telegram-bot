@@ -9,9 +9,11 @@ use App\Services\WebHookService;
 
 class BotController extends Controller
 {
+
+    // MAGIC STUFF
     protected $hook;
 
-    public function __construct(WebHookService $hook)
+    public function __construct(WebHookService $hook) // IS USED FOR CONSTRUCTING THE WEB-HOOK FOR TELEGRAM
     {
         $this->hook = $hook;
     }
@@ -20,10 +22,13 @@ class BotController extends Controller
     {
         $validatedData = $request->validatedData();
 
-        $this->hook->sendMessage($validatedData['chat_id'],$validatedData['text']);
-        Message::query()->create($validatedData);
+        $this->hook->sendMessage($validatedData['chat_id'],$validatedData['text']);//THROUGH THE CHAT_ID
+        Message::query()->create($validatedData);// IT SENDS THE MESSAGE TO THE USER
 
         return response()->json(['status' => 'success']);
     }
 }
+
+
+
 

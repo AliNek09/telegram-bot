@@ -28,7 +28,7 @@ class RussianRouletteRequest extends FormRequest
         ];
     }
 
-    public function messages(): array
+    public function messages(): array //VALIDATION FOR USER INPUT
     {
         return [
             'message.number.integer' => 'The value should be integer',
@@ -37,11 +37,11 @@ class RussianRouletteRequest extends FormRequest
         ];
     }
 
-    public function validateData() {
+    public function validateData() { // NORMALIZATION OF INPUT DATA
         return [
-          'chat_id' => $this->input('message.chat_id'),
-          'username' => $this->input('message.from.username'),
-          'number' => $this->input('message.number')
+          'chat_id' => $this->input('message.chat_id'), ////CHAT_ID of telegram
+          'username' => $this->input('message.from.username'), ////USERNAME OF telegram user
+          'number' => $this->input('message.number') //// the input data
         ];
     }
 }

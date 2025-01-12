@@ -18,26 +18,13 @@ class Service
 
     protected function http(): PendingRequest
     {
-        return Http::baseUrl($this->baseUrl)->acceptJson();
-    }
-
-    protected function post(string $url, $body = [], array $headers = []): Response
-    {
-        $http = $this->http();
-
-        if(!empty($headers)) {
-            $http->replaceHeaders($headers);
-        }
-        $response = $http->post($url, $body);
-        $this->checkResponse($response, $body);
-
-        return $response;
+        return Http::baseUrl($this->baseUrl)->acceptJson(); //WAITING FOR THE BASEE!!!!
     }
 
     protected function checkResponse($response, $body): void
     {
         if($response->failed()) {
-            $this->throw($response, $body);
+            $this->throw($response, $body); //THROW ERRRRRRRRRROOOOOOOOOORRRRR
         }
     }
 
@@ -46,12 +33,6 @@ class Service
      */
     protected function throw($response, $body)
     {
-        $explode = explode('\\', get_called_class());
-        $service = $explode[count($explode) - 1];
-
-        $key = debug_backtrace()[1]['class'] == get_parent_class($this) ? 2 : 1;
-        $method = debug_backtrace()[$key]['function'];
-
-        throw new Exception("$service $method: body - " . json_encode($body) . ", response - {$response->body()}, response status - {$response->status()}");
+        $service = explode('\\', get_called_class())[count(explode('\\', get_called_class())) - 1]; //SOMETHING MAGIC HAPPENS HERE
     }
 }

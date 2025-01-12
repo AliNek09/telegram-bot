@@ -28,12 +28,12 @@ class BotRequest extends FormRequest
         ];
     }
 
-    public function validatedData()
+    public function validatedData() //NORMALIZATION FOR USER INPUT
     {
         return [
-            'chat_id' => $this->input('message.chat.id'),
-            'username' => $this->input('message.from.username'),
-            'text' => $this->input('message.text'),
+            'chat_id' => $this->input('message.chat.id'), //CHAT_ID of telegram
+            'username' => $this->input('message.from.username'),//USERNAME OF telegram user
+            'text' => $this->input('message.text'), // the input data
         ];
     }
 }

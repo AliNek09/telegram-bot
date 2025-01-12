@@ -16,6 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('chat_id');
             $table->string('username');
             $table->text('text');
+
+
             $table->timestamps();
         });
     }
